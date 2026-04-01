@@ -95,7 +95,7 @@ Wrote a custom SOC playbook used to train the Airia AI agent. The playbook defin
 
 **Complete pipeline execution — Python script detected 70 packets from 192.168.1.100, generated alert SOC-CC95AA8A, sent to Airia API, received HTTP 200 response with structured triage report:**
 
-<img width="1456" height="816" alt="Pipeline execution output" src="https://github.com/user-attachments/assets/REPLACE_PIPELINE_SCREENSHOT" />
+<img width="1456" height="816" alt="Airia AI agent" src="https://github.com/user-attachments/assets/980a70ca-c76f-427c-b5d6-f2e09cfa32df" />
 
 <br>
 
