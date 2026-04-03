@@ -13,15 +13,15 @@ This lab demonstrates understanding of alert automation, API integration, struct
 
 ## 🏗️ Lab Architecture
 
-**Attacker machine (Kali Linux)** generates ICMP traffic toward the internal server. The internal server runs the Python script continuously in the background.
+**Attacker machine (Ubuntu)** generates ICMP traffic toward the internal server. The internal server runs the Python script continuously in the background.
 
 ```
-Attacker Machine (Kali)
-        ↓ ICMP traffic
+Attacker Machine (Ubuntu)
+        ↓ ICMP traffic (ping 192.168.1.101)
 Internal Server (Ubuntu)
         ↓ tshark captures traffic → traffic.pcap
         ↓ converts to CSV → traffic.csv
-        ↓ analyzes source IPs → detects threshold breach
+        ↓ analyzes source IPs → detects threshold breach (>40 packets)
         ↓ generates structured JSON alert → alert.json
         ↓ sends via API to Airia AI agent
 Airia AI Agent (Junior SOC Analyst v2.00)
@@ -79,7 +79,7 @@ Wrote a custom SOC playbook used to train the Airia AI agent. The playbook defin
 
 **Published Airia AI agent — Junior SOC Analyst v2.00:**
 
-<img width="1456" height="816" alt="Airia AI agent" src="https://github.com/user-attachments/assets/980a70ca-c76f-427c-b5d6-f2e09cfa32df" />
+![1771994211300](https://github.com/user-attachments/assets/62dfdfce-73d3-4250-b15f-5edd422a1e54)
 
 <br>
 
@@ -87,21 +87,20 @@ Wrote a custom SOC playbook used to train the Airia AI agent. The playbook defin
 
 ### 🔴 End-to-End Pipeline Working — Live Output
 
-**Attacker machine (Ubuntu) pinging internal server at 192.168.1.101 — generating ICMP traffic that the Python script captures:**
+**Attacker machine pinging internal server at 192.168.1.101 across two terminal windows — generating cumulative ICMP traffic that crossed the 40-packet threshold:**
 
-<img width="1456" height="816" alt="Ping test from attacker" src="https://github.com/user-attachments/assets/0c1f84bb-515f-4117-bfc1-2bb6b5cb4648" />
-
-<br>
-
-**Complete pipeline execution — Python script detected 70 packets from 192.168.1.100, generated alert SOC-CC95AA8A, sent to Airia API, received HTTP 200 response with structured triage report:**
-
-<img width="1456" height="816" alt="Airia AI agent" src="https://github.com/user-attachments/assets/980a70ca-c76f-427c-b5d6-f2e09cfa32df" />
+<img width="1456" height="816" alt="Ping traffic generation" src="https://github.com/user-attachments/assets/0c1f84bb-515f-4117-bfc1-2bb6b5cb4648" />
 
 <br>
 
-**AI triage report returned — threat classification: Suspicious Network Volume, risk score: 50 (Medium), recommended actions: Monitor and request missing fields, escalation: false:**
+**Complete pipeline execution — Python script detected 70 packets from 192.168.1.100, generated alert SOC-CC95AA8A, sent to Airia API, received HTTP 200 response with full triage report:**
 
-The full Airia response from the pipeline run:
+<img width="1763" height="1080" alt="Screenshot 2026-02-25 093349" src="https://github.com/user-attachments/assets/522493e9-b50e-4e74-9332-fa2261dbcfe2" />
+
+<br>
+
+**AI triage report returned — threat classification: Suspicious Network Volume, risk score: 50 (Medium), escalation: false:**
+
 ```json
 {
   "alert_id": "SOC-CC95AA8A",
