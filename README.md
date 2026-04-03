@@ -45,39 +45,39 @@ Airia AI Agent (Junior SOC Analyst v2.00)
 
 Built a five-stage Python script that runs end-to-end from traffic capture to AI triage without manual intervention.
 
-**Stage 1 — Traffic Capture**
+**Stage 1 – Traffic Capture**
 Uses tshark to capture ICMP traffic on eth0 targeting the internal server for a defined time window. Saves output as traffic.pcap.
 
-**Stage 2 — PCAP to CSV Conversion**
+**Stage 2 – PCAP to CSV Conversion**
 Converts the packet capture to CSV using tshark field extraction — frame timestamp, source IP, destination IP, protocol, and frame length.
 
-**Stage 3 — IP Analysis**
+**Stage 3 – IP Analysis**
 Reads the CSV, counts packets per source IP using Python Counter, and flags any IP exceeding the packet threshold (set to 40) as suspicious.
 
-**Stage 4 — JSON Alert Generation**
+**Stage 4 – JSON Alert Generation**
 Generates a structured alert JSON with a unique SOC alert ID, threat type, indicator value, destination details, evidence block, and an analyst question for the AI agent.
 
-**Stage 5 — API Submission to Airia**
+**Stage 5 – API Submission to Airia**
 Posts the JSON alert to the published Airia AI agent API endpoint. Receives and prints the structured triage response.
 
 ---
 
-### 🔴 SOC Playbook — AI Agent System Prompt
+### 🔴 SOC Playbook – AI Agent System Prompt
 
 Wrote a custom SOC playbook used to train the Airia AI agent. The playbook defines the agent's behavior across ten sections:
 
-- Input validation — required JSON fields check
-- Threat classification — Brute Force, Scanning, Suspicious Volume, Malware Communication, Benign Noise
-- Risk scoring model — 0 to 100 with defined contribution rules (packet count thresholds, ICMP flood indicators, privileged service targets)
-- MITRE ATT&CK mapping — tactic and technique ID output
-- SOC analyst action plan — Monitor, Enrich, Block IP, Escalate, Isolate
-- Escalation logic — automatic escalation recommendation at risk score 80+
-- Executive summary — plain language 2-3 sentence business impact statement
-- Confidence level — Low / Medium / High based on input completeness
-- Strict JSON output format — no markdown, no conversational filler
-- Guardrails — no attack instructions, no fabricated intelligence, defensive analysis only
+- Input validation – required JSON fields check
+- Threat classification – Brute Force, Scanning, Suspicious Volume, Malware Communication, Benign Noise
+- Risk scoring model – 0 to 100 with defined contribution rules (packet count thresholds, ICMP flood indicators, privileged service targets)
+- MITRE ATT&CK mapping – tactic and technique ID output
+- SOC analyst action plan – Monitor, Enrich, Block IP, Escalate, Isolate
+- Escalation logic – automatic escalation recommendation at risk score 80+
+- Executive summary – plain language 2-3 sentence business impact statement
+- Confidence level – Low / Medium / High based on input completeness
+- Strict JSON output format – no markdown, no conversational filler
+- Guardrails – no attack instructions, no fabricated intelligence, defensive analysis only
 
-**Published Airia AI agent — Junior SOC Analyst v2.00:**
+**Published Airia AI agent – Junior SOC Analyst v2.00:**
 
 ![1771994211300](https://github.com/user-attachments/assets/62dfdfce-73d3-4250-b15f-5edd422a1e54)
 
@@ -85,7 +85,7 @@ Wrote a custom SOC playbook used to train the Airia AI agent. The playbook defin
 
 ---
 
-### 🔴 End-to-End Pipeline Working — Live Output
+### 🔴 End-to-End Pipeline Working – Live Output
 
 **Attacker machine pinging internal server at 192.168.1.101 across two terminal windows — generating cumulative ICMP traffic that crossed the 40-packet threshold:**
 
@@ -93,13 +93,13 @@ Wrote a custom SOC playbook used to train the Airia AI agent. The playbook defin
 
 <br>
 
-**Complete pipeline execution — Python script detected 70 packets from 192.168.1.100, generated alert SOC-CC95AA8A, sent to Airia API, received HTTP 200 response with full triage report:**
+**Complete pipeline execution – Python script detected 70 packets from 192.168.1.100, generated alert SOC-CC95AA8A, sent to Airia API, received HTTP 200 response with full triage report:**
 
 <img width="1763" height="1080" alt="Screenshot 2026-02-25 093349" src="https://github.com/user-attachments/assets/522493e9-b50e-4e74-9332-fa2261dbcfe2" />
 
 <br>
 
-**AI triage report returned — threat classification: Suspicious Network Volume, risk score: 50 (Medium), escalation: false:**
+**AI triage report returned – threat classification: Suspicious Network Volume, risk score: 50 (Medium), escalation: false:**
 
 ```json
 {
@@ -121,6 +121,9 @@ Wrote a custom SOC playbook used to train the Airia AI agent. The playbook defin
 ```
 
 - 📌 MITRE: `T1498` Network Denial of Service · `T1046` Network Service Scanning
+- Note: Confidence level was Low because the alert JSON was missing source_host
+  and protocol fields. This reflects a real gap in the detection script that
+  would need to be fixed in a production environment.
 
 ---
 
